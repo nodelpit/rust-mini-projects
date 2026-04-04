@@ -1,0 +1,8 @@
+# Dossiers de compilation générés par Cargo
+target/
+
+# Backups éventuels de fichiers Rust
+**/*.rs.bk
+
+# Fichiers système macOS
+.DS_Store
