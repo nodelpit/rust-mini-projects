@@ -1,0 +1,7 @@
+[workspace]
+members = [
+    # "projects_1",
+    # "projects_2",
+]
+
+resolver = "3"
