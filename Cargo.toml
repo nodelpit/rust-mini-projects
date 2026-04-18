@@ -1,5 +1,5 @@
 [workspace]
-members = [
+members = ["terminal-rpg"
     # "projects_1",
     # "projects_2",
 ]
