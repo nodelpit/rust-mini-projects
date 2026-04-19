@@ -1,9 +1,33 @@
+#[allow(dead_code)]
 #[derive(Debug)]
 struct Fighter {
     name: String,
     attack_power: u8,
     current_hp: u16,
     max_hp: u16,
+}
+
+#[derive(Debug)]
+enum Action {
+    Attack,
+    Defend,
+    Heal,
+    Quit,
+}
+
+#[derive(Debug)]
+enum ActionError {
+    InvalidInput,
+}
+
+fn parse_action(input: &str) -> Result<Action, ActionError> {
+    match input.trim().to_lowercase().as_str() {
+        "attack" => Ok(Action::Attack),
+        "defend" => Ok(Action::Defend),
+        "heal" => Ok(Action::Heal),
+        "quit" => Ok(Action::Quit),
+        _ => Err(ActionError::InvalidInput),
+    }
 }
 
 impl Fighter {
@@ -23,4 +47,11 @@ fn main() {
 
     println!("{:?}", hero);
     println!("{:?}", monster);
+
+    println!("{:?}", parse_action("attack"));
+    println!("{:?}", parse_action("attack  "));
+    println!("{:?}", parse_action("Attack"));
+    println!("{:?}", parse_action("Attzc zzk"));
+    println!("{:?}", parse_action("zd"));
+    println!("{:?}", parse_action(""));
 }
