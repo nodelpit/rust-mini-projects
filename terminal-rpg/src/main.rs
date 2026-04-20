@@ -101,4 +101,6 @@ fn main() {
 
     println!("\n");
     monster.take_damage(hero.attack_power.into());
+
+    println!("Hero encore en vie ? -> {:?}", hero.is_alive());
 }
