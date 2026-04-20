@@ -70,9 +70,7 @@ fn apply_action(hero: &mut Fighter, monster: &mut Fighter, action: Action) -> St
             "You healed yourself".to_string()
         }
 
-        Action::Quit => {
-            "See you in another hell..".to_string()
-        }
+        Action::Quit => "See you in another hell..".to_string(),
     }
 }
 
@@ -94,8 +92,10 @@ fn main() {
 
     println!("\n");
 
-    println!("{:?}", 
-    apply_action(&mut hero, &mut monster, Action::Attack));
+    println!(
+        "{:?}",
+        apply_action(&mut hero, &mut monster, Action::Attack)
+    );
 
     println!("He has left {:?}HP", monster.current_hp);
 
