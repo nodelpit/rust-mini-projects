@@ -1,3 +1,5 @@
+use std::io::stdin;
+
 #[allow(dead_code)]
 #[derive(Debug)]
 struct Fighter {
@@ -57,7 +59,7 @@ fn apply_action(hero: &mut Fighter, monster: &mut Fighter, action: Action) -> St
     match action {
         Action::Attack => {
             monster.take_damage(hero.attack_power.into());
-            "You attacked a monster".to_string()
+            "You attacked a monster !".to_string()
         }
 
         Action::Defend => {
@@ -66,7 +68,7 @@ fn apply_action(hero: &mut Fighter, monster: &mut Fighter, action: Action) -> St
         }
 
         Action::Heal => {
-            hero.heal(15);
+            hero.heal(20);
             "You healed yourself".to_string()
         }
 
@@ -78,31 +80,50 @@ fn main() {
     let mut hero = Fighter::new("Rustler", 12, 100, 100);
     let mut monster = Fighter::new("Pythor", 15, 90, 90);
 
-    println!("{:?}", hero);
-    println!("{:?}", monster);
-
     println!("\n");
+    println!("=========== TERMINAL-RPG ===========");
 
-    println!("{:?}", parse_action("attack"));
-    println!("{:?}", parse_action("attack  "));
-    println!("{:?}", parse_action("Attack"));
-    // println!("{:?}", parse_action("Attzc zzk"));
-    // println!("{:?}", parse_action("zd"));
-    // println!("{:?}", parse_action(""));
+    loop {
+        println!("What action do you want to perform");
 
-    println!("\n");
+        let mut input = String::new();
 
-    println!(
-        "{:?}",
-        apply_action(&mut hero, &mut monster, Action::Attack)
-    );
+        let _ = stdin().read_line(&mut input).expect("Failed to read input");
+        let parsed_result = parse_action(&input);
 
-    println!("He has left {:?}HP", monster.current_hp);
+        match parsed_result {
+            Ok(action) => match action {
+                Action::Quit => break,
+                other_action => {
+                    println!("{}", apply_action(&mut hero, &mut monster, other_action));
+                    println!(
+                        "Your HP: {} | Monster HP: {}",
+                        hero.current_hp, monster.current_hp
+                    );
+                    println!("\n");
 
-    println!("\n");
-    monster.take_damage(hero.attack_power.into());
+                    if monster.is_alive() {
+                        hero.take_damage(monster.attack_power.into());
+                        println!("A monster attacked you !");
+                        println!(
+                            "Your HP: {} | Monster HP: {}",
+                            hero.current_hp, monster.current_hp
+                        );
+                        println!("\n");
+                    }
+                }
+            },
+            Err(_) => println!("Action inconue, veuillez réessayez !"),
+        }
 
-    println!("Hero encore en vie ? -> {:?}", hero.is_alive());
+        if hero.current_hp == 0 {
+            println!("GAME OVER");
+            break;
+        } else if monster.current_hp == 0 {
+            println!("YOU WIN BABY");
+            break;
+        }
+    }
 }
 
 #[cfg(test)]
