@@ -104,3 +104,46 @@ fn main() {
 
     println!("Hero encore en vie ? -> {:?}", hero.is_alive());
 }
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn test_take_damage_normal() {
+        let mut fighter = Fighter::new("Test", 10, 100, 100);
+        fighter.take_damage(30);
+        assert_eq!(fighter.current_hp, 70);
+    }
+
+    #[test]
+    fn test_take_damage_clamp() {
+        let mut fighter = Fighter::new("Test", 10, 10, 100);
+        fighter.take_damage(30);
+        assert_eq!(fighter.current_hp, 0);
+    }
+
+    #[test]
+    fn test_heal_normal() {
+        let mut fighter = Fighter::new("Test", 10, 10, 100);
+        fighter.heal(20);
+        assert_eq!(fighter.current_hp, 30);
+    }
+
+    #[test]
+    fn test_heal_clamp() {
+        let mut fighter = Fighter::new("Test", 10, 90, 100);
+        fighter.heal(20);
+        assert_eq!(fighter.current_hp, 100);
+    }
+
+    #[test]
+    fn test_apply_action_attack() {
+        let mut hero = Fighter::new("Rustler", 12, 100, 100);
+        let mut monster = Fighter::new("Pythor", 15, 90, 90);
+
+        apply_action(&mut hero, &mut monster, Action::Attack);
+
+        assert_eq!(monster.current_hp, 78);
+    }
+}
